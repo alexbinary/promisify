@@ -1,16 +1,11 @@
 
-function promisify (ctx, f, fulfiller) {
-  if (!fulfiller) {
-    fulfiller = (resolve, reject) => {
-      return (err, ...args) => {
-        if (err) reject(err)
-        else resolve(...args)
-      }
-    }
-  }
+function promisify (ctx, f) {
   return function () {
     return new Promise((resolve, reject) => {
-      f.call(ctx || this, ...arguments, fulfiller(resolve, reject))
+      f.call(ctx || this, ...arguments, (err, ...args) => {
+        if (err) reject(err)
+        else resolve(...args)
+      })
     })
   }
 }
