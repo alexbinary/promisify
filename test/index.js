@@ -26,7 +26,7 @@ describe('promisify', function () {
     describe('function without context', function () {
       it('success', function (done) {
         // ## TEST
-        let promisifed = promisify(null, func)
+        let promisifed = promisify(func)
         promisifed(1, 2).then((res) => {
           // ## Assert
           expect(res).to.equal(3)
@@ -35,27 +35,8 @@ describe('promisify', function () {
       })
       it('error', function (done) {
         // ## TEST
-        let promisifed = promisify(null, func)
+        let promisifed = promisify(func)
         promisifed(-1, 2).catch(() => {
-          // ## Assert
-          // ## End
-        }).then(done, done)
-      })
-    })
-    describe('function with bound context', function () {
-      it('success', function (done) {
-        // ## TEST
-        let promisifed = promisify(obj, obj.func)
-        promisifed(1).then((res) => {
-          // ## Assert
-          expect(res).to.equal(2)
-          // ## End
-        }).then(done, done)
-      })
-      it('error', function (done) {
-        // ## TEST
-        let promisifed = promisify(obj, obj.func)
-        promisifed(-1).catch(() => {
           // ## Assert
           // ## End
         }).then(done, done)
@@ -67,7 +48,7 @@ describe('promisify', function () {
         let ob = {
           val: 2,
           // ## TEST
-          promisifed: promisify(null, obj.func)
+          promisifed: promisify(obj.func)
         }
         ob.promisifed(1).then((res) => {
           // ## Assert
@@ -80,7 +61,7 @@ describe('promisify', function () {
         let ob = {
           val: 2,
           // ## TEST
-          promisifed: promisify(null, obj.func)
+          promisifed: promisify(obj.func)
         }
         ob.promisifed(-1).catch(() => {
           // ## Assert
@@ -93,7 +74,7 @@ describe('promisify', function () {
     describe('function without context', function () {
       it('success', function (done) {
         // ## TEST
-        let promisifed = promisify(null, func)
+        let promisifed = promisify(func)
         promisifed(1, 2, (err, res) => {
           // ## Assert
           expect(err).to.be.null
@@ -104,31 +85,8 @@ describe('promisify', function () {
       })
       it('error', function (done) {
         // ## TEST
-        let promisifed = promisify(null, func)
+        let promisifed = promisify(func)
         promisifed(-1, 2, (err, res) => {
-          // ## Assert
-          expect(err).to.not.be.null
-          // ## End
-          done()
-        })
-      })
-    })
-    describe('function with bound context', function () {
-      it('success', function (done) {
-        // ## TEST
-        let promisifed = promisify(obj, obj.func)
-        promisifed(1, (err, res) => {
-          // ## Assert
-          expect(err).to.be.null
-          expect(res).to.equal(2)
-          // ## End
-          done()
-        })
-      })
-      it('error', function (done) {
-        // ## TEST
-        let promisifed = promisify(obj, obj.func)
-        promisifed(-1, (err, res) => {
           // ## Assert
           expect(err).to.not.be.null
           // ## End
@@ -142,7 +100,7 @@ describe('promisify', function () {
         let ob = {
           val: 2,
           // ## TEST
-          promisifed: promisify(null, obj.func)
+          promisifed: promisify(obj.func)
         }
         ob.promisifed(1, (err, res) => {
           // ## Assert
@@ -157,7 +115,7 @@ describe('promisify', function () {
         let ob = {
           val: 2,
           // ## TEST
-          promisifed: promisify(null, obj.func)
+          promisifed: promisify(obj.func)
         }
         ob.promisifed(-1, (err, res) => {
           // ## Assert
