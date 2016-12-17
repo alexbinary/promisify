@@ -2,166 +2,103 @@
 let expect = require('chai').expect
 let promisify = require('./../src/index')
 
-function func (arg1, arg2, cb) {
-  if (arg1 > 0) {
-    cb(null, arg1 + arg2)
-  } else {
-    cb(new Error('arg1 must be positive'))
-  }
-}
-
-let obj = {
-  val: 1,
-  func: function (arg, cb) {
-    if (arg > 0) {
-      cb(null, arg + this.val)
-    } else {
-      cb(new Error('arg must be positive'))
-    }
-  }
-}
-
 describe('promisify', function () {
-  describe('use as promise', function () {
-    describe('function without context', function () {
-      it('success', function (done) {
-        // ## TEST
-        let promisifed = promisify(null, func)
-        promisifed(1, 2).then((res) => {
-          // ## Assert
-          expect(res).to.equal(3)
-          // ## End
-        }).then(done, done)
-      })
-      it('error', function (done) {
-        // ## TEST
-        let promisifed = promisify(null, func)
-        promisifed(-1, 2).catch(() => {
-          // ## Assert
-          // ## End
-        }).then(done, done)
-      })
+  describe('promisify function', function () {
+    it('when function returns success', function (done) {
+      // ## Setup
+      function f (arg, cb) { cb(null, arg) }
+      // ## TEST
+      promisify(f)(1).then(result => {
+        // ## Assert
+        expect(result).to.equal(1)
+        // ## End
+      }).then(() => done()).catch(() => done())
     })
-    describe('function with bound context', function () {
-      it('success', function (done) {
-        // ## TEST
-        let promisifed = promisify(obj, obj.func)
-        promisifed(1).then((res) => {
-          // ## Assert
-          expect(res).to.equal(2)
-          // ## End
-        }).then(done, done)
-      })
-      it('error', function (done) {
-        // ## TEST
-        let promisifed = promisify(obj, obj.func)
-        promisifed(-1).catch(() => {
-          // ## Assert
-          // ## End
-        }).then(done, done)
-      })
+    it('when function returns error', function (done) {
+      // ## Setup
+      function f (cb) { cb(new Error()) }
+      // ## TEST
+      promisify(f)().catch(err => {
+        // ## Assert
+        expect(err).to.be.instanceof(Error)
+        // ## End
+      }).then(() => done()).catch(() => done())
     })
-    describe('function with dynamic context', function () {
-      it('success', function (done) {
+    it('keep unbound `this`', function (done) {
+      // ## Setup
+      function f (cb) { cb(null, this) }
+      // ## TEST
+      promisify(f).call({x: 1}).then(result => {
+        // ## Assert
+        expect(result).to.deep.equal({x: 1})
+        // ## End
+      }).then(() => done()).catch(() => done())
+    })
+    describe('keep callback style', function () {
+      it('function returns success', function (done) {
         // ## Setup
-        let ob = {
-          val: 2,
-          // ## TEST
-          promisifed: promisify(null, obj.func)
-        }
-        ob.promisifed(1).then((res) => {
+        function f (arg, cb) { cb(null, arg) }
+        // ## TEST
+        promisify(f)(1, (err, result) => {
           // ## Assert
-          expect(res).to.equal(3)
+          expect(err).to.be.null
+          expect(result).to.equal(1)
           // ## End
-        }).then(done, done)
+          done()
+        })
       })
-      it('error', function (done) {
+      it('function returns error', function (done) {
         // ## Setup
-        let ob = {
-          val: 2,
-          // ## TEST
-          promisifed: promisify(null, obj.func)
-        }
-        ob.promisifed(-1).catch(() => {
+        function f (cb) { cb(new Error()) }
+        // ## TEST
+        promisify(f)((err, result) => {
           // ## Assert
+          expect(err).to.be.instanceof(Error)
           // ## End
-        }).then(done, done)
+          done()
+        })
       })
     })
   })
-  describe('use with callback', function () {
-    describe('function without context', function () {
-      it('success', function (done) {
-        // ## TEST
-        let promisifed = promisify(null, func)
-        promisifed(1, 2, (err, res) => {
+  describe('promisify object methods', function () {
+    it('promisify methods', function (done) {
+      // ## Setup
+      let obj = {
+        func1 (cb) { cb(null, this) },
+        func2 (cb) { cb(null, this) }
+      }
+      // ## TEST
+      promisify(obj, ['func1', 'func2'])
+      Promise.all([
+        obj.func1().then(result => {
           // ## Assert
-          expect(err).to.be.null
-          expect(res).to.equal(3)
-          // ## End
-          done()
-        })
-      })
-      it('error', function (done) {
+          expect(result).to.equal(obj)
+        }),
         // ## TEST
-        let promisifed = promisify(null, func)
-        promisifed(-1, 2, (err, res) => {
+        obj.func2().then(result => {
           // ## Assert
-          expect(err).to.not.be.null
-          // ## End
-          done()
+          expect(result).to.equal(obj)
         })
-      })
+        // ## End
+      ]).then(() => done()).catch(() => done())
     })
-    describe('function with bound context', function () {
-      it('success', function (done) {
+    it('keep callback style', function (done) {
+      // ## Setup
+      let obj = {
+        func1 (cb) { cb(null, this) },
+        func2 (cb) { cb(null, this) }
+      }
+      // ## TEST
+      promisify(obj, ['func1', 'func2'])
+      obj.func1((err, result) => {
+        // ## Assert
+        expect(err).to.be.null
+        expect(result).to.equal(obj)
         // ## TEST
-        let promisifed = promisify(obj, obj.func)
-        promisifed(1, (err, res) => {
+        obj.func2((err, result) => {
           // ## Assert
           expect(err).to.be.null
-          expect(res).to.equal(2)
-          // ## End
-          done()
-        })
-      })
-      it('error', function (done) {
-        // ## TEST
-        let promisifed = promisify(obj, obj.func)
-        promisifed(-1, (err, res) => {
-          // ## Assert
-          expect(err).to.not.be.null
-          // ## End
-          done()
-        })
-      })
-    })
-    describe('function with dynamic context', function () {
-      it('success', function (done) {
-        // ## Setup
-        let ob = {
-          val: 2,
-          // ## TEST
-          promisifed: promisify(null, obj.func)
-        }
-        ob.promisifed(1, (err, res) => {
-          // ## Assert
-          expect(err).to.be.null
-          expect(res).to.equal(3)
-          // ## End
-          done()
-        })
-      })
-      it('error', function (done) {
-        // ## Setup
-        let ob = {
-          val: 2,
-          // ## TEST
-          promisifed: promisify(null, obj.func)
-        }
-        ob.promisifed(-1, (err, res) => {
-          // ## Assert
-          expect(err).to.not.be.null
+          expect(result).to.equal(obj)
           // ## End
           done()
         })
