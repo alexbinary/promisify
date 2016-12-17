@@ -12,7 +12,14 @@ function func (arg1, arg2, cb) {
 
 let obj = {
   val: 1,
-  func: function (arg, cb) {
+  func1: function (arg, cb) {
+    if (arg > 0) {
+      cb(null, arg + this.val)
+    } else {
+      cb(new Error('arg must be positive'))
+    }
+  },
+  func2: function (arg, cb) {
     if (arg > 0) {
       cb(null, arg + this.val)
     } else {
@@ -48,7 +55,7 @@ describe('promisify', function () {
         let ob = {
           val: 2,
           // ## TEST
-          promisifed: promisify(obj.func)
+          promisifed: promisify(obj.func1)
         }
         ob.promisifed(1).then((res) => {
           // ## Assert
@@ -61,11 +68,41 @@ describe('promisify', function () {
         let ob = {
           val: 2,
           // ## TEST
-          promisifed: promisify(obj.func)
+          promisifed: promisify(obj.func1)
         }
         ob.promisifed(-1).catch(() => {
           // ## Assert
           // ## End
+        }).then(done, done)
+      })
+    })
+    describe('bulk object promisification', function () {
+      it('success', function (done) {
+        // ## TEST
+        promisify(obj, ['func1', 'func2'])
+        obj.func1(1)
+        .then(result => {
+          // ## Assert
+          expect(result).to.equal(2)
+        }).then(() => {
+          return obj.func1(1).then(result => {
+            // ## Assert
+            expect(result).to.equal(2)
+          })
+          // ## End
+        }).then(done, done)
+      })
+      it('error', function (done) {
+        // ## TEST
+        promisify(obj, ['func1', 'func2'])
+        obj.func1(-1)
+        .catch(err => {
+          // ## Assert
+          expect(err).to.not.be.null
+          return obj.func1(-1).catch(err => {
+            // ## Assert
+            expect(err).to.not.be.null
+          })
         }).then(done, done)
       })
     })
@@ -100,7 +137,7 @@ describe('promisify', function () {
         let ob = {
           val: 2,
           // ## TEST
-          promisifed: promisify(obj.func)
+          promisifed: promisify(obj.func1)
         }
         ob.promisifed(1, (err, res) => {
           // ## Assert
@@ -115,13 +152,45 @@ describe('promisify', function () {
         let ob = {
           val: 2,
           // ## TEST
-          promisifed: promisify(obj.func)
+          promisifed: promisify(obj.func1)
         }
         ob.promisifed(-1, (err, res) => {
           // ## Assert
           expect(err).to.not.be.null
           // ## End
           done()
+        })
+      })
+    })
+    describe('bulk object promisification', function () {
+      it('success', function (done) {
+        // ## TEST
+        promisify(obj, ['func1', 'func2'])
+        obj.func1(1, (err, result) => {
+          // ## Assert
+          expect(err).to.be.null
+          expect(result).to.equal(2)
+          obj.func2(1, (err, result) => {
+            // ## Assert
+            expect(err).to.be.null
+            expect(result).to.equal(2)
+            // ## End
+            done()
+          })
+        })
+      })
+      it('error', function (done) {
+        // ## TEST
+        promisify(obj, ['func1', 'func2'])
+        obj.func1(-1, (err, result) => {
+          // ## Assert
+          expect(err).to.not.be.null
+          obj.func2(-1, (err, result) => {
+            // ## Assert
+            expect(err).to.not.be.null
+            // ## End
+            done()
+          })
         })
       })
     })
