@@ -38,6 +38,17 @@ describe('promisify', function () {
         // ## End
       }).then(() => done()).catch(() => done())
     })
+    it('is idempotent', function (done) {
+      // ## Setup
+      function f (cb) { cb(null, this) }
+      // ## TEST
+      let promisifiedOnce = promisify(f)
+      let promisifiedTwice = promisify(promisifiedOnce)
+      // ## Assert
+      expect(promisifiedTwice).to.equal(promisifiedOnce)
+      // ## End
+      done()
+    })
     describe('keep callback style', function () {
       it('function returns success', function (done) {
         // ## Setup
