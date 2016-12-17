@@ -1,4 +1,6 @@
 
+let symPromisified = Symbol.for('alexbinary.promisified')
+
 function promisify (arg1, arg2) {
   if (arg2) {
     // promisify(obj, ['method1', 'method2'])
@@ -12,7 +14,8 @@ function promisify (arg1, arg2) {
 }
 
 function promisifyFunction (f) {
-  return function () {
+  if (f[symPromisified]) return f
+  let result = function () {
     return new Promise((resolve, reject) => {
       f.call(this, ...arguments, (err, ...args) => {
         if (err) reject(err)
@@ -20,6 +23,8 @@ function promisifyFunction (f) {
       })
     })
   }
+  result[symPromisified] = true
+  return result
 }
 
 module.exports = promisify
