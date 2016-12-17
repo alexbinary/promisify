@@ -1,5 +1,9 @@
 
 let expect = require('chai').expect
+
+let fs = require('fs')
+let path = require('path')
+
 let promisify = require('./../src/index')
 
 describe('promisify', function () {
@@ -103,6 +107,18 @@ describe('promisify', function () {
           done()
         })
       })
+    })
+  })
+  describe('promisify fs', function () {
+    it('readFile', function (done) {
+      // ## TEST
+      promisify(fs, ['readFile'])
+      fs.readFile(path.join(__dirname, '../package.json'), 'utf8')
+      .then(content => {
+        // ## Assert
+        expect(JSON.parse(content).license).to.equal('MIT')
+        // ## End
+      }).then(() => done()).catch(() => done())
     })
   })
 })
