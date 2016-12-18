@@ -1,10 +1,16 @@
 
-let expect = require('chai').expect
+let chai = require('chai')
+chai.use(require('chai-fs'))
+
+let expect = chai.expect
 
 let fs = require('fs')
 let path = require('path')
 
+let fsSandbox = require('alexbinary.fs-sandbox')
 let promisify = require('./../src/index')
+
+fsSandbox.setRoot(__dirname)
 
 describe('promisify', function () {
   describe('promisify function', function () {
@@ -121,15 +127,51 @@ describe('promisify', function () {
     })
   })
   describe('promisify fs', function () {
-    it('readFile', function (done) {
-      // ## TEST
-      promisify(fs, ['readFile'])
-      fs.readFile(path.join(__dirname, '../package.json'), 'utf8')
-      .then(content => {
-        // ## Assert
-        expect(JSON.parse(content).license).to.equal('MIT')
-        // ## End
-      }).then(() => done()).catch(() => done())
+    describe('writeFile', function () {
+      it('direct', function (done) {
+        // ## Setup
+        let sandbox = fsSandbox.newSync()
+        let file = sandbox.touchpSync('foo/bar')
+        // ## TEST
+        promisify(fs.writeFile)(file.fullpath, 'test').then(() => {
+          // ## Assert
+          expect(file.fullpath).to.be.a.file().with.content('test')
+          // ## Teardown
+          fsSandbox.rmSync()
+          // ## End
+        }).then(() => done()).catch(done)
+      })
+      it('pre-use', function (done) {
+        // ## Setup
+        let sandbox = fsSandbox.newSync()
+        let file = sandbox.touchpSync('foo/bar')
+        fs.writeFile = promisify(fs.writeFile)
+        // ## TEST
+        fs.writeFile(file.fullpath, 'test').then(() => {
+          // ## Assert
+          expect(file.fullpath).to.be.a.file().with.content('test')
+          // ## Teardown
+          fsSandbox.rmSync()
+          // ## End
+        }).then(() => done()).catch(done)
+      })
+      it('bulk', function (done) {
+        // ## Setup
+        let sandbox = fsSandbox.newSync()
+        let file = sandbox.touchpSync('foo/bar')
+        promisify(fs, ['writeFile'])
+        // ## TEST
+        fs.writeFile(file.fullpath, 'test').then(() => {
+          // ## Assert
+          expect(file.fullpath).to.be.a.file().with.content('test')
+          // ## Teardown
+          fsSandbox.rmSync()
+          // ## End
+        }).then(() => done()).catch(done)
+      })
     })
+  })
+  after(function () {
+    fsSandbox.rmSync()
   })
 })
