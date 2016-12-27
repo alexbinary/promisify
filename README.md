@@ -10,9 +10,9 @@ Minimalist promisification 👍
 Install using npm or yarn :
 
 ```bash
-npm install @alexbinary/promisify
+$ npm install @alexbinary/promisify
 # or
-yarn add @alexbinary/promisify
+$ yarn add @alexbinary/promisify
 ```
 
 ## Usage
