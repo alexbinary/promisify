@@ -1,19 +1,17 @@
 
 let chai = require('chai')
+let expect = chai.expect
 chai.use(require('chai-fs'))
 
-let expect = chai.expect
-
-let fs = require('fs')
-
 let fsSandbox = require('alexbinary.fs-sandbox')
-let promisify = require('./../src/index')
-
 fsSandbox.setRoot(__dirname)
 
+let fs = require('fs')
+let promisify = require('./../src/index')
+
 describe('promisify', function () {
-  describe('promisify function', function () {
-    it('when function returns success', function (done) {
+  describe('function', function () {
+    it('when return success', function (done) {
       // ## Setup
       function f (arg, cb) { cb(null, arg) }
       // ## TEST
@@ -23,7 +21,7 @@ describe('promisify', function () {
         // ## End
       }).then(() => done()).catch(done)
     })
-    it('when function returns error', function (done) {
+    it('when return error', function (done) {
       // ## Setup
       function f (cb) { cb(new Error()) }
       // ## TEST
@@ -43,7 +41,7 @@ describe('promisify', function () {
         // ## End
       }).then(() => done()).catch(done)
     })
-    it('is idempotent', function (done) {
+    it('idempotent', function () {
       // ## Setup
       function f (cb) { cb(null, this) }
       // ## TEST
@@ -52,10 +50,9 @@ describe('promisify', function () {
       // ## Assert
       expect(promisifiedTwice).to.equal(promisifiedOnce)
       // ## End
-      done()
     })
     describe('keep callback style', function () {
-      it('function returns success', function (done) {
+      it('return success', function (done) {
         // ## Setup
         function f (arg, cb) { cb(null, arg) }
         // ## TEST
@@ -67,7 +64,7 @@ describe('promisify', function () {
           done()
         })
       })
-      it('function returns error', function (done) {
+      it('return error', function (done) {
         // ## Setup
         function f (cb) { cb(new Error()) }
         // ## TEST
@@ -80,8 +77,8 @@ describe('promisify', function () {
       })
     })
   })
-  describe('promisify object methods', function () {
-    it('promisify methods', function (done) {
+  describe('object methods', function () {
+    it('promisify', function (done) {
       // ## Setup
       let obj = {
         func1 (cb) { cb(null, this) },
