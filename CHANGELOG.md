@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## upcoming release
+
+- add API doc
+
 ## v3.0.0
 
 ### Breaking changes
