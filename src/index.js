@@ -7,6 +7,7 @@ function promisify (arg1, arg2) {
     arg2.forEach((name) => {
       arg1[name] = promisifyFunction(arg1[name])
     })
+    return arg1
   } else {
     // promisify(func)
     return promisifyFunction(arg1)

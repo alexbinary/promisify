@@ -121,6 +121,18 @@ describe('promisify', function () {
         })
       })
     })
+    it('return object', function () {
+      // ## Setup
+      let obj = {
+        func1 (cb) { cb(null, this) },
+        func2 (cb) { cb(null, this) }
+      }
+      // ## TEST
+      let result = promisify(obj, ['func1', 'func2'])
+      // ## Assert
+      expect(result).to.equal(obj)
+      // ## End
+    })
   })
   describe('promisify fs', function () {
     describe('writeFile', function () {
