@@ -2,6 +2,9 @@
 
 Minimalist promisification 👍
 
+[![npm](https://img.shields.io/npm/v/@alexbinary/promisify.svg)](https://www.npmjs.com/package/@alexbinary/promisify)
+[![GitHub release](https://img.shields.io/github/release/alexbinary/promisify.svg?label="github")](https://github.com/alexbinary/promisify/releases/latest)
+
 ## Install
 
 Install using npm or yarn :
