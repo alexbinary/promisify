@@ -2,6 +2,8 @@
 
 ## upcoming release
 
+- clean test code
+
 ## v3.0.1
 
 - add API doc
