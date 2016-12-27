@@ -2,6 +2,8 @@
 
 ## upcoming release
 
+## v3.0.1
+
 - add API doc
 
 ## v3.0.0
