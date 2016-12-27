@@ -11,7 +11,7 @@ let promisify = require('./../src/index')
 
 describe('promisify', function () {
   describe('function', function () {
-    it('when return success', function (done) {
+    it('success', function (done) {
       // ## Setup
       function f (arg, cb) { cb(null, arg) }
       // ## TEST
@@ -21,7 +21,7 @@ describe('promisify', function () {
         // ## End
       }).then(() => done()).catch(done)
     })
-    it('when return error', function (done) {
+    it('error', function (done) {
       // ## Setup
       function f (cb) { cb(new Error()) }
       // ## TEST
@@ -31,7 +31,7 @@ describe('promisify', function () {
         // ## End
       }).then(() => done()).catch(done)
     })
-    it('keep unbound `this`', function (done) {
+    it('unbound `this`', function (done) {
       // ## Setup
       function f (cb) { cb(null, this) }
       // ## TEST
@@ -52,7 +52,7 @@ describe('promisify', function () {
       // ## End
     })
     describe('keep callback style', function () {
-      it('return success', function (done) {
+      it('success', function (done) {
         // ## Setup
         function f (arg, cb) { cb(null, arg) }
         // ## TEST
@@ -64,7 +64,7 @@ describe('promisify', function () {
           done()
         })
       })
-      it('return error', function (done) {
+      it('error', function (done) {
         // ## Setup
         function f (cb) { cb(new Error()) }
         // ## TEST

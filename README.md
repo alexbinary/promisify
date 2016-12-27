@@ -10,9 +10,9 @@ Minimalist promisification 👍
 Install using npm or yarn :
 
 ```bash
-npm install @alexbinary/promisify
+$ npm install @alexbinary/promisify
 # or
-yarn add @alexbinary/promisify
+$ yarn add @alexbinary/promisify
 ```
 
 ## Usage
@@ -51,6 +51,10 @@ Returns a function that returns a Promise with `function` as executor.
 
 If the callback is called with an error then the promise gets rejected with that error.
 If the callback is called without error then the promise is resolved with any arguments passed to the callback after the first argument.
+
+The returned function can still take a callback as last parameter and will call it correctly so you can keep using it with a callback approach if you want to.
+
+This method is idempotent, i.e. if `function` is the result of calling `promisify` then the returned value is `function` itself. This is done by defining a Symbol property on the returned object and checking for that property before processing.
 
 ### promisify(object, methods)
 
