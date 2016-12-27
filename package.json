@@ -1,11 +1,23 @@
 {
   "name": "alexbinary.promisify",
-  "description": "Minimalist promisification 👍",
   "version": "2.0.0",
+  "description": "Minimalist promisification 👍",
+  "keywords": [
+    "promise",
+    "promises",
+    "promisify",
+    "promisification",
+    "async"
+  ],
+  "homepage": "https://github.com/alexbinary/promisify#readme",
+  "bugs": {
+    "url": "https://github.com/alexbinary/promisify/issues",
+    "email": "alexandre@bintz.io"
+  },
+  "license": "MIT",
+  "author": "Alexandre Bintz <alexandre@bintz.io>",
   "main": "src/index.js",
   "repository": "https://github.com/alexbinary/promisify.git",
-  "author": "Alexandre Bintz <alexandre@bintz.io>",
-  "license": "MIT",
   "scripts": {
     "test": "istanbul cover _mocha",
     "testw": "mocha -w"
