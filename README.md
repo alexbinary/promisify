@@ -15,7 +15,7 @@ $ yarn add https://github.com/alexbinary/promisify.git
 ## Usage
 
 ```javascript
-let promisify = require('alexbinary.promisify')
+let promisify = require('@alexbinary/promisify')
 
 // promisify a function :
 
