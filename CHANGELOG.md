@@ -2,6 +2,7 @@
 
 ## upcoming release
 
+- update dependencies
 - clean test code
 
 ## v3.0.1
