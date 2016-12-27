@@ -4,12 +4,12 @@ Minimalist promisification 👍
 
 ## Install
 
-Install with npm/yarn :
+Install using npm or yarn :
 
-```
-$ npm install https://github.com/alexbinary/promisify.git
-
-$ yarn add https://github.com/alexbinary/promisify.git
+```bash
+npm install @alexbinary/promisify
+# or
+yarn add @alexbinary/promisify
 ```
 
 ## Usage
