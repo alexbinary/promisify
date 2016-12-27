@@ -1,17 +1,31 @@
 {
-  "name": "alexbinary.promisify",
+  "name": "@alexbinary/promisify",
+  "version": "3.0.0",
   "description": "Minimalist promisification 👍",
-  "version": "2.0.0",
+  "keywords": [
+    "promise",
+    "promises",
+    "promisify",
+    "promisification",
+    "async"
+  ],
+  "homepage": "https://github.com/alexbinary/promisify#readme",
+  "bugs": {
+    "url": "https://github.com/alexbinary/promisify/issues",
+    "email": "alexandre@bintz.io"
+  },
+  "license": "MIT",
+  "author": "Alexandre Bintz <alexandre@bintz.io>",
   "main": "src/index.js",
   "repository": "https://github.com/alexbinary/promisify.git",
-  "author": "Alexandre Bintz <alexandre@bintz.io>",
-  "license": "MIT",
   "scripts": {
     "test": "istanbul cover _mocha",
     "testw": "mocha -w"
   },
   "devDependencies": {
+    "alexbinary.fs-sandbox": "https://github.com/alexbinary/fs-sandbox.git",
     "chai": "^3.5.0",
+    "chai-fs": "^1.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0"
   }
