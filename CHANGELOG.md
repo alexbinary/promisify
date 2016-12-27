@@ -4,6 +4,7 @@
 
 - update dependencies
 - clean test code
+- fix/improve readme
 
 ## v3.0.1
 
