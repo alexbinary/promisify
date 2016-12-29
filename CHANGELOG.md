@@ -2,6 +2,8 @@
 
 ## upcoming release
 
+- fix travis deploy config
+
 ## v3.0.3
 
 - add David (DM) badge
