@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+- node
+- '7'
+- '6'
+deploy:
+  provider: npm
+  email: alexandre@bintz.io
+  api_key:
+    secure: AZbHY/ls0kjRiyD0yCAv5tLA+tncnR1tHlKFsn3cgKbZA6GKzDW09Xc6fUJ6g49kMej6Sy+otxyp0bqXMVyI3Vs8CY+z/xxIgxc2EVbPPEPEHTFnz7+dtnu1LaGdqhx5RaEGQSi0dy2yvvWdW+2aU2rHevYpD3YvU02kxjiFCzov25zLl4JeW+popYLTh7kCYMzax0T4AERWtum+A7uIU1jhmxnExuu3XFBpH0DpOPqv3nBv59I8vbYZHeXJR6Iu8pfeJEEi3zlGAX8oU4cqQOs32yef9qPygtMylaPxRw/2Mo3M0v9SPC6LFguYYQz0pQ8zq9myqUyEXEPLO/0XOk3l8LhKTNiJr6y/XyGEFCmXUkBa9xDmbu/8goSsHGaH7yXScU8zyj1yLDDWf2leq9C/G3pV6hVIM7q7gHnYemXfDRuAOojoPzSheo7bghsq1aHaXeOVwhgVuCkG/y0ywuBRXtaKTTJxr2kQFH2O7E/jieFTsaiXeheG7uY0To7ov/b9Gf100zyoix/zCfKIUJMU+cT+ZKbV8PB86Jxrc3dgT+kYIeFT7rcyHSKDlIAr6CcZkJ75sFYQnz/kHC0GPNFnkV7yFWX42lG/LIk8BLE12IgQLDeO/V1CXb0EznHq9WN2qrsfp78OVHJ8GWMJ9cNmEP05mIxCil/b0Fvs1Ac=
+  on:
+    tags: true
+    node: node
